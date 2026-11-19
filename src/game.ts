@@ -21,12 +21,6 @@ const TICK_MS = 1000 / 60;
 const START_LIVES = 3;
 const BOSS_WARNING_TICKS = 200;
 const VICTORY_TICKS = 180;
-const ENEMY_STATS = {
-  drone: { hp: 2, score: 100, radius: 13, dropChance: 0.015, canShoot: true },
-  dart: { hp: 1, score: 150, radius: 12, dropChance: 0.015, canShoot: false },
-  turret: { hp: 12, score: 400, radius: 19, dropChance: 0.3, canShoot: true },
-  lancer: { hp: 4, score: 250, radius: 15, dropChance: 0.06, canShoot: true },
-} as const;
 /** Seconds of idling before the title hands the ship to the autopilot. */
 const IDLE_SECONDS = 8;
 
@@ -340,20 +334,12 @@ export class GameScene extends Phaser.Scene implements Arena {
 
   summon(_kind: string, x: number, y: number): void {
     this.enemies.push(
-      new ShmupPrefabSprite(
-        this,
+      new ShmupPrefabSprite(this, {
         x,
         y,
-        "drone",
-        2,
-        100,
-        13,
-        0.015,
-        true,
-        false,
-        x,
-        x < WIDTH / 2 ? 1 : -1,
-      ),
+        kind: "drone",
+        side: x < WIDTH / 2 ? 1 : -1,
+      }),
     );
   }
 
@@ -452,22 +438,13 @@ export class GameScene extends Phaser.Scene implements Arena {
         spawnY = 70 + Math.floor(i / 2) * 50;
       }
       if (t !== tick) continue;
-      const stats = ENEMY_STATS[kind];
       this.enemies.push(
-        new ShmupPrefabSprite(
-          this,
-          spawnX,
-          spawnY,
+        new ShmupPrefabSprite(this, {
+          x: spawnX,
+          y: spawnY,
           kind,
-          stats.hp,
-          stats.score,
-          stats.radius,
-          stats.dropChance,
-          stats.canShoot,
-          false,
-          spawnX,
-          i % 2 === 0 ? 1 : -1,
-        ),
+          side: i % 2 === 0 ? 1 : -1,
+        }),
       );
     }
   }
