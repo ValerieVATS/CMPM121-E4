@@ -151,7 +151,7 @@ export class Player extends Actor {
 
 type EnemyType = EnemyKind | "boss";
 type EnemySpawn = { x: number; y: number; kind: EnemyType; side?: number };
-type EnemySpec = {
+interface EnemySpec {
   texture: string;
   hp: number;
   score: number;
@@ -159,7 +159,7 @@ type EnemySpec = {
   dropChance: number;
   move?: (enemy: Enemy, arena: Arena) => void;
   fire?: (enemy: Enemy, arena: Arena) => void;
-};
+}
 
 function aim(from: { x: number; y: number }, arena: Arena): number {
   return Math.atan2(arena.player.y - from.y, arena.player.x - from.x);

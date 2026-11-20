@@ -2,22 +2,22 @@
 export type EnemyKind = "drone" | "dart" | "turret" | "lancer";
 export type Formation = "line" | "vee" | "column" | "pincer";
 
-export type Wave = {
+export interface Wave {
   at: number;
   kind: EnemyKind;
   count: number;
   formation: Formation;
   /** Center for lines and vees; fixed spawn position for columns. */
   x?: number;
-};
+}
 
-export type Sector = {
+export interface Sector {
   name: string;
   subtitle: string;
   /** Minimum ticks before advancing; allow 240 more for remaining enemies. */
   length: number;
   waves: readonly Wave[];
-};
+}
 
 export const ROUTE: readonly Sector[] = [
   {
